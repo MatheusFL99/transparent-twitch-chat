@@ -1,0 +1,42 @@
+{
+  "name": "transparent-twitch-chat",
+  "version": "0.1.0",
+  "main": "src/main.js",
+  "description": "Twitch Chat Viewer with transparency and click-through",
+  "author": "MatheusFL99",
+  "scripts": {
+    "start": "electron src/main.js",
+    "build": "electron-builder"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^25.3.1",
+    "electron-builder": "^24.6.0"
+  },
+  "build": {
+    "appId": "com.mfl.transparenttwitchchat",
+    "productName": "Transparent Twitch Chat",
+    "directories": {
+      "output": "dist"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "MatheusFL99",
+        "repo": "transparent-twitch-chat"
+      }
+    ],
+    "files": [
+      "src/**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}

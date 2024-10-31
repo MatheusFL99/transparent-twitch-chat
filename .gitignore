@@ -1,0 +1,37 @@
+# Node modules e dependências
+node_modules/
+package-lock.json
+
+# Build output
+dist/
+out/
+
+# Pastas temporárias e de cache
+temp/
+tmp/
+*.log
+*.tmp
+*.cache
+*.lock
+
+# Arquivos de configuração do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Configurações do editor e do ambiente de desenvolvimento
+.vscode/
+.idea/
+*.swp
+
+# Configurações de build do Electron e arquivos sensíveis
+electron-builder.yml
+/build/
+config.json
+
+# Secretos e chaves
+.env
+.env.local
+*.env.*
+
+# Arquivos de publicação automática e cache do GitHub Actions
+.github/workflows/*.yml
