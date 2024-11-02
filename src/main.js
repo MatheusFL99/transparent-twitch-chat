@@ -5,9 +5,9 @@ const path = require("path");
 let mainWindow;
 let chatWindow;
 let isClickThrough = false;
-let configPath = path.join(__dirname, "config.json");
+let configPath = path.join(app.getPath("userData"), "config.json");
 
-function loadConfig() {
+const loadConfig = () => {
   if (fs.existsSync(configPath)) {
     const data = fs.readFileSync(configPath);
     const config = JSON.parse(data);
@@ -27,11 +27,11 @@ function loadConfig() {
     transparency: 100,
     isClickThrough: false,
   };
-}
+};
 
-function saveConfig(config) {
+const saveConfig = (config) => {
   fs.writeFileSync(configPath, JSON.stringify(config));
-}
+};
 
 function createWindow() {
   const config = loadConfig();
@@ -51,7 +51,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadFile("index.html");
+  mainWindow.loadFile(path.join(__dirname, "index.html"));
 
   mainWindow.once("ready-to-show", () => {
     if (config.lastUser) {
@@ -69,7 +69,6 @@ function createWindow() {
     if (chatWindow) {
       chatWindow.setIgnoreMouseEvents(isClickThrough, { forward: true });
 
-      // Ajustar o comportamento do CSS
       if (isClickThrough) {
         chatWindow.webContents.executeJavaScript(`
           document.body.style.pointerEvents = 'none'; 
@@ -95,7 +94,6 @@ function createWindow() {
 
     console.log("Abrindo chat para o usuário:", username);
 
-    // Verificar se o chatWindow existe e não foi destruído
     if (chatWindow && !chatWindow.isDestroyed()) {
       chatWindow.close();
     }
@@ -135,16 +133,15 @@ function createWindow() {
           left: 0;
           width: 100%;
           height: 30px;
-          -webkit-app-region: drag; /* Habilita arrastar */
+          -webkit-app-region: drag;
           background-color: rgba(0, 0, 0, 0.1);
           z-index: 1000;
         }
-        /* Ocultar as divs com as classes específicas */
         .Layout-sc-1xcs6mc-0.hsXgFK, 
         .Layout-sc-1xcs6mc-0.fiHaCw.stream-chat-header, 
         .Layout-sc-1xcs6mc-0.kILIqT.chat-input,
         .Layout-sc-1xcs6mc-0.community-highlight-stack__card.community-highlight-stack__card--wide { 
-          display: none !important; /* Garante que esses elementos não apareçam */
+          display: none !important;
         }
       `);
 
@@ -183,7 +180,16 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(createWindow);
+app
+  .whenReady()
+  .then(createWindow)
+  .catch((error) => {
+    console.error("Erro ao criar a janela:", error);
+  });
+
+process.on("uncaughtException", (error) => {
+  console.error("Erro não tratado:", error);
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
