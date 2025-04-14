@@ -123,14 +123,24 @@
         "click-through-checkbox"
       );
 
-      // Abrir o chat da Twitch
-      openChatButton.addEventListener("click", () => {
-        const username = usernameInput.value;
+      // Função para abrir o chat da Twitch
+      const openChat = () => {
+        const username = usernameInput.value.trim();
         if (username) {
           ipcRenderer.send("open-chat", username);
           ipcRenderer.send("save-user", username);
         } else {
           alert("Por favor, digite um nome de usuário.");
+        }
+      };
+
+      // Evento de clique no botão
+      openChatButton.addEventListener("click", openChat);
+
+      // Evento de tecla "Enter" no campo de entrada
+      usernameInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          openChat();
         }
       });
 
